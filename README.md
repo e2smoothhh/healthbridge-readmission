@@ -195,16 +195,15 @@ Follow the instructions in `data/DATA_SOURCES.md` to download the UCI dataset an
 
 | Model | ROC-AUC | Precision | Recall | F1-Score |
 |---|---|---|---|---|
-| Logistic Regression | TBD | TBD | TBD | TBD |
-| Random Forest | TBD | TBD | TBD | TBD |
-| XGBoost | TBD | TBD | TBD | TBD |
-
+| Logistic Regression | 0.577 | 0.11 | 0.49 | 0.18 |
+| Random Forest | 0.568 | 0.14 | 0.03 | 0.05 |
+| **XGBoost ★** | **0.591** | **0.13** | **0.37** | **0.19** |
 ---
 
 ## 👥 Team
 
 **Program:** Advanced Data Analytics — Concentration in Artificial Intelligence
-**Institution:** *[Your University]*
+**Institution:** *University of North Texas*
 **Academic Year:** 2025–2026
 
 ---
