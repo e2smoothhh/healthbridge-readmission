@@ -1,6 +1,8 @@
 # 🏥 Hospital 30-Day Readmission Prediction
 ### HealthBridge Medical Center — DFW Metroplex
-**Advanced Data Analytics Capstone Project | AY 2025–2026**
+**ADTA 5340 — Discovery and Learning with Big Data | University of North Texas | Spring 2026**
+
+> 📄 **Start here:** [Executive Summary](reports/Executive_Summary.pdf) · [Final Presentation (20 slides)](reports/Readmission_Risk_ML_Presentation.pdf)
 
 ---
 
@@ -47,30 +49,30 @@ Build a machine learning pipeline that:
 healthbridge-readmission/
 │
 ├── 📓 notebooks/
-│   ├── 01_data_cleaning.ipynb          # Raw data → diabetic_clean.csv
-│   ├── 02_eda.ipynb                    # Exploratory data analysis & visualizations
-│   ├── 03_preprocessing.ipynb          # Feature engineering → model-ready files
-│   ├── 04_modeling.ipynb               # Logistic Regression, Random Forest, XGBoost
-│   └── 05_evaluation_shap.ipynb        # Model evaluation, SHAP feature importance
+│   ├── 01_data_cleaning.ipynb                  # Raw data → diabetic_clean.csv
+│   ├── 02_eda.ipynb                            # Core exploratory data analysis
+│   ├── 02b_eda_extended.ipynb                  # Extended EDA: demographics, medications, SMOTE validation, key findings
+│   ├── 03_preprocessing.ipynb                  # Encoding, ICD-9 grouping, split, scaling, oversampling
+│   ├── 03a_medication_feature_engineering.ipynb # 23 medication columns → 4 engineered features
+│   ├── 04_modeling.ipynb                       # Logistic Regression, Random Forest, XGBoost
+│   └── 05_evaluation_shap.ipynb                # Evaluation, SHAP explainability, risk tiers, impact simulation
 │
 ├── 📊 data/
-│   ├── raw/                            # Original UCI dataset (not tracked by git)
-│   ├── processed/                      # diabetic_clean.csv (not tracked by git)
-│   └── DATA_SOURCES.md                 # Dataset descriptions and download links
+│   └── DATA_SOURCES.md                         # Dataset descriptions and download links (data not tracked)
 │
 ├── 🤖 models/
-│   └── MODEL_NOTES.md                  # Saved model artifacts and performance log
+│   └── MODEL_NOTES.md                          # Performance log, confusion matrices, model configuration
 │
 ├── 📄 reports/
-│   ├── project_outline.docx            # Full project outline document
-│   ├── cleaning_preprocessing_summary/ # Team reference documents
-│   └── figures/                        # Charts and visualizations for report
+│   ├── Executive_Summary.pdf                   # 2-page project summary
+│   ├── Readmission_Risk_ML_Presentation.pdf    # Final 20-slide presentation
+│   └── figures/                                # Exported charts
 │
 ├── 📦 assets/
-│   └── requirements.txt                # All Python dependencies
+│   └── requirements.txt                        # Python dependencies
 │
-├── .gitignore                          # Excludes data files and sensitive content
-└── README.md                           # This file
+├── .gitignore                                  # Excludes data files and model artifacts
+└── README.md
 ```
 
 ---
@@ -117,6 +119,7 @@ Business Understanding → Data Understanding → Data Preparation
 | Binary target variable | readmitted_30: <30 → 1, else → 0 |
 | ICD-9 grouping (CCS) | 695+ codes → 9 clinical categories |
 | Categorical encoding | Binary, ordinal, one-hot, medication simplification |
+| Medication feature engineering | 23 medication columns condensed into `med_count`, `med_changed_count`, `insulin_active`, `key_med_active` |
 | Train/test split | 80/20 stratified — preserves 9% positive class ratio |
 | Feature scaling | StandardScaler fitted on training data only |
 | Class imbalance | SMOTE applied to training set only (9% → ~50% positive) |
@@ -139,7 +142,9 @@ Target: ROC-AUC ≥ 0.70 (stretch goal: 0.75+)
 
 ---
 
-## 📈 Expected Business Impact
+## 📈 Projected Business Impact (Simulation)
+
+*Scenario estimates for the fictional HealthBridge network — not realized savings.*
 
 | Scenario | Readmission Rate | Estimated Annual Savings |
 |---|---|---|
@@ -168,7 +173,7 @@ Environment:     Google Colab / Jupyter Notebook
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/YOUR_USERNAME/healthbridge-readmission.git
+git clone https://github.com/e2smoothhh/healthbridge-readmission.git
 cd healthbridge-readmission
 ```
 
@@ -185,26 +190,51 @@ Follow the instructions in `data/DATA_SOURCES.md` to download the UCI dataset an
 01_data_cleaning.ipynb      ← Start here
 02_eda.ipynb
 03_preprocessing.ipynb
+03a_medication_feature_engineering.ipynb
 04_modeling.ipynb
 05_evaluation_shap.ipynb    ← Final results
 ```
 
 ---
 
-## 📊 Key Results *(to be updated as project progresses)*
+## 📊 Key Results — Test Set (13,998 patients, 9% readmitted)
 
 | Model | ROC-AUC | Precision | Recall | F1-Score |
 |---|---|---|---|---|
 | Logistic Regression | 0.577 | 0.11 | 0.49 | 0.18 |
 | Random Forest | 0.568 | 0.14 | 0.03 | 0.05 |
 | **XGBoost ★** | **0.591** | **0.13** | **0.37** | **0.19** |
+
+### What we learned
+- **Accuracy is misleading on imbalanced data:** Random Forest reached 89.7% accuracy but caught only 2.9% of readmitted patients, so we selected models by ROC-AUC and recall.
+- **Top drivers of readmission risk:** length of stay, discharge disposition, admission source and type, lab volume, and number of diagnoses.
+- **Modest predictive power (ROC-AUC 0.59):** the dataset lacks richer clinical signals, and XGBoost overfit (train AUC 0.79 vs. test 0.59). The model gives directional insight for care teams but is not deployment-ready.
+
+### Next steps
+- Add comorbidity indices (e.g., Charlson), lab trends, prior utilization history, and social determinants of health
+- Try cost-sensitive learning and early stopping to reduce overfitting
+- Tune the decision threshold around care-team capacity
+- Build a Power BI risk-tier dashboard for care managers
+
 ---
 
 ## 👥 Team
 
-**Program:** Advanced Data Analytics — Concentration in Artificial Intelligence
-**Institution:** *University of North Texas*
-**Academic Year:** 2025–2026
+Team project (equal contribution) — ADTA 5340, Dr. Tony Fantasia, University of North Texas, Spring 2026
+
+| Team Member |
+|---|
+| Chukwuebuka Amobi |
+| Chimalis Mushambi |
+| **Emmanuel Nwawuihe** (this repository) |
+| Bissy Olajide |
+| Praise Thomas |
+
+**My contributions:** [ADD — e.g., data cleaning pipeline, ICD-9 grouping, XGBoost modeling, SHAP analysis, presentation sections]
+
+Teammate repository: [chimalis-m/Hospital-Readmission-Risk-Prediction-Model](https://github.com/chimalis-m/Hospital-Readmission-Risk-Prediction-Model)
+
+> Note: `02b_eda_extended.ipynb` and `03a_medication_feature_engineering.ipynb` read the processed `.xlsx` files (`diabetic_clean.xlsx`, `X_train.xlsx`, etc.) produced by notebooks 01 and 03. Data files are excluded from version control.
 
 ---
 
