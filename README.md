@@ -224,16 +224,15 @@ Team project (equal contribution) — ADTA 5340, Dr. Tony Fantasia, University o
 
 | Team Member |
 |---|
+| **Emmanuel Nwawuihe** (this repository) |
 | Chukwuebuka Amobi |
 | Chimalis Mushambi |
-| **Emmanuel Nwawuihe** (this repository) |
 | Bissy Olajide |
 | Praise Thomas |
 
 **My contributions:** [ADD — e.g., data cleaning pipeline, ICD-9 grouping, XGBoost modeling, SHAP analysis, presentation sections]
 
-Teammate repository: [chimalis-m/Hospital-Readmission-Risk-Prediction-Model](https://github.com/chimalis-m/Hospital-Readmission-Risk-Prediction-Model)
-
+Team
 > Note: `02b_eda_extended.ipynb` and `03a_medication_feature_engineering.ipynb` read the processed `.xlsx` files (`diabetic_clean.xlsx`, `X_train.xlsx`, etc.) produced by notebooks 01 and 03. Data files are excluded from version control.
 
 ---
